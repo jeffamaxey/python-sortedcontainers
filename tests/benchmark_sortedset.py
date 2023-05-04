@@ -161,7 +161,7 @@ def symmetric_difference_update_large(func, size):
 
 @register_test
 def pop(func, size):
-    for rpt in range(int(size / 100)):
+    for _ in range(int(size / 100)):
         func()
 
 @register_test

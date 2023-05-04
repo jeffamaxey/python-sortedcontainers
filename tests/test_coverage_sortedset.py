@@ -81,7 +81,7 @@ def test_eq():
     assert alpha == beta
     assert alpha == beta._set
     beta.add(101)
-    assert not (alpha == beta)
+    assert alpha != beta
 
 def test_ne():
     alpha = SortedSet(range(100))

@@ -292,9 +292,8 @@ class Multiset(Mixed):
             obj.add(value)
         elif pos < 95:
             obj.remove(value)
-        else:
-            if value < len(obj):
-                obj[value]
+        elif value < len(obj):
+            obj[value]
 
 for name, kind in kinds.items():
     impls['multiset'][name] = {

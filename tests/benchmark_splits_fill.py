@@ -107,28 +107,28 @@ def init_sorted_list(sl, size):
 
 def fill(obj, count, limit):
     "Repeatedly add random values to the SortedList."
-    for each in range(count):
+    for _ in range(count):
         obj.add(random.randrange(limit))
 
 
 if __name__ == '__main__':
     low_splits = []
 
-    for each in range(REPEAT):
+    for _ in range(REPEAT):
         sl = SortedListWithSplits(range(LIMIT))
         fill(sl, LIMIT / RATIO, LIMIT)
         low_splits.append(sl.splits)
 
     uniform_splits = []
 
-    for each in range(REPEAT):
+    for _ in range(REPEAT):
         sl = init_sorted_list(SortedListWithSplits(), LIMIT)
         fill(sl, LIMIT / RATIO, LIMIT)
         uniform_splits.append(sl.splits)
 
     rand_splits = []
 
-    for each in range(REPEAT):
+    for _ in range(REPEAT):
         sl = SortedListWithSplits()
 
         values = list(range(LIMIT))

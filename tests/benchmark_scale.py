@@ -119,18 +119,19 @@ def init_sorted_list(sl, size, moment=5, fraction=0.1):
     sigma = load * fraction
     total = 0
 
+
+
     class WhileIterator(object):
         "Convert for-loop to while-loop with length estimate."
         def __iter__(self):
             while total < size:
                 yield True
-        def __len__(self):
-            if moment < 0:
-                return size / half
-            else:
-                return size / load
 
-    for each in PROGRESS(WhileIterator(), 'init-sub'):
+        def __len__(self):
+            return size / half if moment < 0 else size / load
+
+
+    for _ in PROGRESS(WhileIterator(), 'init-sub'):
         count = int(random.normalvariate(mu, sigma))
 
         if moment >= 0:
@@ -156,7 +157,7 @@ def init_sorted_list(sl, size, moment=5, fraction=0.1):
     sl._len = sum(len(sublist) for sublist in sl._lists)
     sl._maxes[:] = [sublist[-1] for sublist in sl._lists]
 
-    for each in PROGRESS(xrange(len(sl) - size), 'init-del'):
+    for _ in PROGRESS(xrange(len(sl) - size), 'init-del'):
         del sl[random.randrange(len(sl))]
 
     del sl._index[:]
@@ -197,7 +198,7 @@ def delitem(obj, indices):
 def randvalues(limit, fraction=0.001):
     "Return fraction of limit random values between 0 and limit."
     iterable = PROGRESS(xrange(int(limit * fraction)), 'randvalues')
-    return [random.randrange(limit) for each in iterable]
+    return [random.randrange(limit) for _ in iterable]
 
 
 def randindices(limit, fraction=0.002):
@@ -224,7 +225,7 @@ def benchmark_add(start, limit, times):
         count = 10 ** exponent
         sl = sc.SortedList(load=int(count ** (1.0 / 3)))
 
-        for attempt in xrange(times):
+        for _ in xrange(times):
             subtimings = []
 
             for moment in xrange(10):
@@ -257,7 +258,7 @@ def benchmark_del(start, limit, times):
         count = 10 ** exponent
         sl = sc.SortedList(load=int(count ** (1.0 / 3))) # 2)))
 
-        for attempt in xrange(times):
+        for _ in xrange(times):
             subtimings = []
 
             for moment in xrange(-5, 0):

@@ -24,7 +24,7 @@ def background():
 
 def frame(num):
     "Draw frame."
-    for value in xrange(LOAD):
+    for _ in xrange(LOAD):
         del values[random.randrange(len(values))]
     data = np.array([len(sublist) for sublist in values._lists])
     hist, bins = np.histogram(data, bins=BINS) # , normed=True)
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     LOAD = int(args.load)
     BINS = np.array(range(LOAD // 2, LOAD * 2 + 1, LOAD // 20))
 
-    values = sc.SortedList(xrange(LOAD * LOAD), load=LOAD)
+    values = sc.SortedList(xrange(LOAD**2), load=LOAD)
 
     fig = plt.figure()
     bounds = (LOAD // 2 - 5 * LOAD // 100, LOAD * 2 - 5 * LOAD // 100)

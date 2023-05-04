@@ -44,7 +44,7 @@ def test_add():
         slt._check()
 
     slt = SortedList()
-    for val in range(1000):
+    for _ in range(1000):
         slt.add(random.random())
         slt._check()
 
@@ -82,7 +82,7 @@ def test_contains():
 def test_discard():
     slt = SortedList()
 
-    assert slt.discard(0) == None
+    assert slt.discard(0) is None
     assert len(slt) == 0
     slt._check()
 
@@ -101,7 +101,7 @@ def test_discard():
 def test_remove():
     slt = SortedList()
 
-    assert slt.discard(0) == None
+    assert slt.discard(0) is None
     assert len(slt) == 0
     slt._check()
 
@@ -145,9 +145,9 @@ def test_getitem():
     slt = SortedList()
     slt._reset(17)
 
-    lst = list()
+    lst = []
 
-    for rpt in range(100):
+    for _ in range(100):
         val = random.random()
         slt.add(val)
         lst.append(val)
@@ -162,9 +162,9 @@ def test_getitem_slice():
     slt = SortedList()
     slt._reset(17)
 
-    lst = list()
+    lst = []
 
-    for rpt in range(100):
+    for _ in range(100):
         val = random.random()
         slt.add(val)
         lst.append(val)
@@ -392,7 +392,7 @@ def test_count():
     assert slt.count(0) == 0
 
     for iii in range(100):
-        for jjj in range(iii):
+        for _ in range(iii):
             slt.add(iii)
         slt._check()
 
@@ -440,7 +440,7 @@ def test_index():
 
     assert slt.index(99, 0, 1000) == 99
 
-    slt = SortedList((0 for rpt in range(100)))
+    slt = SortedList(0 for _ in range(100))
     slt._reset(17)
 
     for start in range(100):
@@ -526,7 +526,7 @@ def test_eq():
     this._reset(4)
     assert this == list(range(10))
     assert this == tuple(range(10))
-    assert not (this == list(range(9)))
+    assert this != list(range(9))
 
 def test_ne():
     this = SortedList(range(10))
@@ -534,7 +534,7 @@ def test_ne():
     assert this != list(range(9))
     assert this != tuple(range(11))
     assert this != [0, 1, 2, 3, 3, 5, 6, 7, 8, 9]
-    assert this != (val for val in range(10))
+    assert this != iter(range(10))
     assert this != set()
 
 def test_lt():

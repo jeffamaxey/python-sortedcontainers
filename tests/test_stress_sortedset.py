@@ -34,7 +34,7 @@ def test_init():
 
     sst.clear()
     assert len(sst) == 0
-    assert list(iter(sst)) == []
+    assert not list(iter(sst))
     sst._check()
 
 @actor
@@ -44,7 +44,7 @@ def stress_contains(sst):
 
 @actor
 def stress_delitem(sst):
-    for rpt in range(100):
+    for _ in range(100):
         pos = random.randrange(0, len(sst))
         del sst[pos]
 
@@ -67,7 +67,7 @@ def stress_reversed(sst):
     
 @actor
 def stress_add(sst):
-    for rpt in range(100):
+    for _ in range(100):
         val = random.randrange(0, 1000)
         sst.add(val)
 
@@ -86,14 +86,14 @@ def stress_difference(sst):
 
 @actor
 def stress_discard(sst):
-    for rpt in range(100):
+    for _ in range(100):
         pos = random.randrange(0, len(sst))
         val = sst[pos]
         sst.discard(val)
 
 @actor
 def stress_index(sst):
-    for rpt in range(100):
+    for _ in range(100):
         pos = random.randrange(0, len(sst))
         val = sst[pos]
         assert pos == sst.index(val)
@@ -116,14 +116,14 @@ def stress_symmetric_difference(sst):
 def stress_pop(sst):
     val = sst[-1]
     assert val == sst.pop()
-    for rpt in range(100):
+    for _ in range(100):
         pos = random.randrange(0, len(sst))
         val = sst[pos]
         assert val == sst.pop(pos)
 
 @actor
 def stress_remove(sst):
-    for rpt in range(100):
+    for _ in range(100):
         pos = random.randrange(0, len(sst))
         val = sst[pos]
         sst.remove(val)
@@ -157,7 +157,7 @@ def stress_issuperset(sst):
 def test_stress(repeat=1000):
     sst = SortedSet(range(1000))
 
-    for rpt in range(repeat):
+    for _ in range(repeat):
         action = random.choice(actions)
         action(sst)
 

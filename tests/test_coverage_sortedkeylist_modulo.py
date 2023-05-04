@@ -92,7 +92,7 @@ def test_add():
     slt._check()
 
     slt = SortedKeyList(key=modulo)
-    for val in range(1000):
+    for _ in range(1000):
         slt.add(random.random())
     slt._check()
 
@@ -140,7 +140,7 @@ def test_contains():
 def test_discard():
     slt = SortedKeyList(key=modulo)
 
-    assert slt.discard(0) == None
+    assert slt.discard(0) is None
     assert len(slt) == 0
     slt._check()
 
@@ -163,7 +163,7 @@ def test_discard():
 def test_remove():
     slt = SortedKeyList(key=modulo)
 
-    assert slt.discard(0) == None
+    assert slt.discard(0) is None
     assert len(slt) == 0
     slt._check()
 
@@ -222,7 +222,7 @@ def test_getitem():
     slt._check()
     slt.clear()
 
-    lst = list(random.random() for rpt in range(100))
+    lst = [random.random() for _ in range(100)]
     slt.update(lst)
     lst.sort(key=modulo)
 
@@ -234,9 +234,9 @@ def test_getitem_slice():
     slt = SortedKeyList(key=modulo)
     slt._reset(17)
 
-    lst = list()
+    lst = []
 
-    for rpt in range(100):
+    for _ in range(100):
         val = random.random()
         slt.add(val)
         lst.append(val)
@@ -535,7 +535,7 @@ def test_count():
     assert slt.count(0) == 0
 
     for iii in range(100):
-        for jjj in range(iii):
+        for _ in range(iii):
             slt.add(iii)
     slt._check()
 
@@ -579,7 +579,7 @@ def test_index():
 
     assert slt.index(9, 0, 1000) == 90
 
-    slt = SortedKeyList((0 for rpt in range(100)), key=modulo)
+    slt = SortedKeyList((0 for _ in range(100)), key=modulo)
     slt._reset(7)
 
     for start in range(100):
@@ -683,7 +683,7 @@ def test_eq():
     this._reset(4)
     assert this == list(range(10))
     assert this == tuple(range(10))
-    assert not (this == list(range(9)))
+    assert this != list(range(9))
 
 def test_ne():
     this = SortedKeyList(range(10, 20), key=modulo)
@@ -691,7 +691,7 @@ def test_ne():
     assert this != list(range(11, 21))
     assert this != tuple(range(10, 21))
     assert this != [0, 1, 2, 3, 3, 5, 6, 7, 8, 9]
-    assert this != (val for val in range(10))
+    assert this != iter(range(10))
     assert this != set()
 
 def test_lt():
