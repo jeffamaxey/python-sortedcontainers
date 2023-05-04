@@ -36,7 +36,7 @@ def test_init():
     assert len(sdict) == 0
 
     sdict = SortedDict.fromkeys(range(1000), None)
-    assert all(sdict[key] == None for key in range(1000))
+    assert all(sdict[key] is None for key in range(1000))
 
 @actor
 def stress_contains(sdict):
@@ -46,7 +46,7 @@ def stress_contains(sdict):
 @actor
 def stress_delitem(sdict):
     keys = list(sdict)
-    for rpt in range(100):
+    for _ in range(100):
         pos = random.randrange(0, len(sdict))
         del sdict[keys[pos]]
         del keys[pos]
@@ -58,7 +58,7 @@ def stress_getitem(sdict):
     
 @actor
 def stress_eq(sdict):
-    that = dict((key, value) for key, value in sdict.items())
+    that = dict(sdict.items())
     assert sdict == that
 
 @actor
@@ -116,7 +116,7 @@ def stress_pop(sdict):
 
 @actor
 def stress_popitem(sdict):
-    items = [sdict.popitem() for rpt in range(100)]
+    items = [sdict.popitem() for _ in range(100)]
     keys = [item[0] for item in items]
     assert all(keys[pos - 1] > keys[pos] for pos in range(1, len(keys)))
     assert all(key == -value for key, value in items)
@@ -129,13 +129,13 @@ def stress_setdefault(sdict):
             assert sdict.setdefault(key) == -key
         else:
             sdict.setdefault(key)
-            assert sdict[key] == None
+            assert sdict[key] is None
             del sdict[key]
 
 def test_stress(repeat=1000):
     sdict = SortedDict((val, -val) for val in range(1000))
 
-    for rpt in range(repeat):
+    for _ in range(repeat):
         action = random.choice(actions)
         action(sdict)
 

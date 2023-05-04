@@ -62,7 +62,7 @@ def test_add():
         slt._check()
 
     slt = SortedKeyList(key=negate)
-    for val in range(1000):
+    for _ in range(1000):
         slt.add(random.random())
         slt._check()
 
@@ -81,7 +81,7 @@ def test_update():
     assert len(slt) == 11100
     slt._check()
 
-    values = sorted((val for val in chain(range(100), range(1000), range(10000))), key=negate)
+    values = sorted(iter(chain(range(100), range(1000), range(10000))), key=negate)
     assert all(tup[0] == tup[1] for tup in zip(slt, values))
 
 def test_contains():
@@ -101,7 +101,7 @@ def test_contains():
 def test_discard():
     slt = SortedKeyList(key=negate)
 
-    assert slt.discard(0) == None
+    assert slt.discard(0) is None
     assert len(slt) == 0
     slt._check()
 
@@ -120,7 +120,7 @@ def test_discard():
 def test_remove():
     slt = SortedKeyList(key=negate)
 
-    assert slt.discard(0) == None
+    assert slt.discard(0) is None
     assert len(slt) == 0
     slt._check()
 
@@ -168,9 +168,9 @@ def test_getitem():
     assert slt[0] == 5
     slt.clear()
 
-    lst = list()
+    lst = []
 
-    for rpt in range(100):
+    for _ in range(100):
         val = random.random()
         slt.add(val)
         lst.append(val)
@@ -185,9 +185,9 @@ def test_getitem_slice():
     slt = SortedKeyList(key=negate)
     slt._reset(17)
 
-    lst = list()
+    lst = []
 
-    for rpt in range(100):
+    for _ in range(100):
         val = random.random()
         slt.add(val)
         lst.append(val)
@@ -286,29 +286,6 @@ def test_reverse():
 
 def test_islice():
     return
-    slt = SortedKeyList(key=negate)
-    slt._reset(7)
-
-    assert [] == list(slt.islice())
-
-    values = sorted(range(53), key=negate)
-    slt.update(values)
-
-    for start in range(53):
-        for stop in range(53):
-            assert list(slt.islice(start, stop)) == values[start:stop]
-
-    for start in range(53):
-        for stop in range(53):
-            assert list(slt.islice(start, stop, reverse=True)) == values[start:stop][::-1]
-
-    for start in range(53):
-        assert list(slt.islice(start=start)) == values[start:]
-        assert list(slt.islice(start=start, reverse=True)) == values[start:][::-1]
-
-    for stop in range(53):
-        assert list(slt.islice(stop=stop)) == values[:stop]
-        assert list(slt.islice(stop=stop, reverse=True)) == values[:stop][::-1]
 
 def test_irange():
     slt = SortedKeyList(key=negate)
@@ -344,7 +321,7 @@ def test_irange():
 
     assert list(slt.irange(inclusive=(False, False))) == values[::-1]
 
-    assert list(slt.irange(-1)) == []
+    assert not list(slt.irange(-1))
     assert list(slt.irange(None, -1, (True, False))) == values[::-1]
 
 def test_len():
@@ -409,7 +386,7 @@ def test_count():
     assert slt.count(0) == 0
 
     for iii in range(100):
-        for jjj in range(iii):
+        for _ in range(iii):
             slt.add(iii)
         slt._check()
 
@@ -450,7 +427,7 @@ def test_index():
 
     assert slt.index(99, 0, 1000) == 0
 
-    slt = SortedKeyList((0 for rpt in range(100)), key=negate)
+    slt = SortedKeyList((0 for _ in range(100)), key=negate)
     slt._reset(17)
 
     for start in range(100):
@@ -530,7 +507,7 @@ def test_eq():
     this._reset(4)
     that = SortedKeyList(range(20), key=negate)
     that._reset(4)
-    assert not (this == that)
+    assert this != that
     that.clear()
     that.update(range(10))
     assert this == that

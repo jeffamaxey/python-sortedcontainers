@@ -54,7 +54,7 @@ def test_plot(test):
         kind_plot(test, kind, len(kinds) - order)
     plt.ylim(ymin=9e-7)
     plt.loglog()
-    plt.title(args.name + ' Performance: ' + test)
+    plt.title(f'{args.name} Performance: {test}')
     plt.ylabel('Seconds')
     plt.xlabel('List Size')
     plt.legend(kinds, loc=2)

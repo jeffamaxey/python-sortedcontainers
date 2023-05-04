@@ -44,7 +44,7 @@ def stress_clear(slt):
     else:
         values = list(slt)
         slt.clear()
-        slt.update(values[:int(len(values) / 2)])
+        slt.update(values[:len(values) // 2])
 
 @actor(1)
 def stress_add(slt):
@@ -54,7 +54,7 @@ def stress_add(slt):
 
 @actor(1)
 def stress_update(slt):
-    slt.update((random.random() for rpt in range(350)))
+    slt.update(random.random() for _ in range(350))
 
 @actor(1)
 @not_empty
@@ -129,7 +129,7 @@ def stress_getitem(slt):
 @actor(1)
 @not_empty
 def stress_delitem_slice(slt):
-    start, stop = sorted(random.randrange(len(slt)) for rpt in range(2))
+    start, stop = sorted(random.randrange(len(slt)) for _ in range(2))
     step = random.choice([-3, -2, -1, 1, 1, 1, 1, 1, 2, 3])
     del slt[start:stop:step]
 
@@ -189,7 +189,7 @@ def stress_bisect_right(slt):
 def stress_dups(slt):
     pos = min(random.randrange(len(slt)), 300)
     val = slt[pos]
-    for rpt in range(pos):
+    for _ in range(pos):
         slt.add(val)
 
 @actor(1)
@@ -240,7 +240,7 @@ def stress_imul(slt):
 def stress_reversed(slt):
     itr = reversed(slt)
     pos = random.randrange(1, len(slt))
-    for rpt in range(pos):
+    for _ in range(pos):
         val = next(itr)
     assert val == slt[-pos]
 
@@ -248,7 +248,7 @@ def stress_reversed(slt):
 @not_empty
 def stress_eq(slt):
     values = []
-    assert not (values == slt)
+    assert values != slt
 
 @actor(1)
 @not_empty
@@ -262,16 +262,16 @@ def stress_lt(slt):
     assert not (slt < values)
 
 def test_stress(repeat=1000):
-    slt = SortedList((random.random() for rpt in range(1000)))
+    slt = SortedList(random.random() for _ in range(1000))
     slt._reset(23)
 
-    for rpt in range(repeat):
+    for _ in range(repeat):
         action = random.choice(actions)
         action(slt)
 
         slt._check()
 
-        fourth = int(len(slt) / 4)
+        fourth = len(slt) // 4
         count = 0 if fourth == 0 else random.randrange(-fourth, fourth)
 
         while count > 0:

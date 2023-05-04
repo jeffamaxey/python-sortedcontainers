@@ -21,16 +21,10 @@ def modulo(value):
     return value % 10
 
 def get_keysview(dic):
-    if hexversion < 0x03000000:
-        return dic.viewkeys()
-    else:
-        return dic.keys()
+    return dic.viewkeys() if hexversion < 0x03000000 else dic.keys()
 
 def get_itemsview(dic):
-    if hexversion < 0x03000000:
-        return dic.viewitems()
-    else:
-        return dic.items()
+    return dic.viewitems() if hexversion < 0x03000000 else dic.items()
 
 def test_init():
     temp = SortedDict()
@@ -85,16 +79,16 @@ def test_eq():
     temp1 = SortedDict(mapping)
     temp2 = SortedDict(mapping)
     assert temp1 == temp2
-    assert not (temp1 != temp2)
+    assert temp1 == temp2
     temp2['a'] = 100
     assert temp1 != temp2
-    assert not (temp1 == temp2)
+    assert temp1 != temp2
     del temp2['a']
     assert temp1 != temp2
-    assert not (temp1 == temp2)
+    assert temp1 != temp2
     temp2['zz'] = 0
     assert temp1 != temp2
-    assert not (temp1 == temp2)
+    assert temp1 != temp2
 
 def test_iter():
     mapping = [(val, pos) for pos, val in enumerate(string.ascii_lowercase)]
@@ -383,7 +377,7 @@ def test_keysview():
     that_keys = get_keysview(that)
 
     assert keys == that_keys
-    assert not (keys != that_keys)
+    assert keys == that_keys
     assert not (keys < that_keys)
     assert not (keys > that_keys)
     assert keys <= that_keys
@@ -391,8 +385,8 @@ def test_keysview():
 
     assert list(keys & that_keys) == [val for val, pos in mapping]
     assert list(keys | that_keys) == [val for val, pos in mapping]
-    assert list(keys - that_keys) == []
-    assert list(keys ^ that_keys) == []
+    assert not list(keys - that_keys)
+    assert not list(keys ^ that_keys)
 
     keys = SortedDict(mapping[:2]).keys()
     assert repr(keys) == "SortedKeysView(SortedDict({'a': 0, 'b': 1}))"
@@ -453,7 +447,7 @@ def test_itemsview():
     that_items = get_itemsview(that)
 
     assert items == that_items
-    assert not (items != that_items)
+    assert items == that_items
     assert not (items < that_items)
     assert not (items > that_items)
     assert items <= that_items
@@ -461,8 +455,8 @@ def test_itemsview():
 
     assert list(items & that_items) == mapping
     assert list(items | that_items) == mapping
-    assert list(items - that_items) == []
-    assert list(items ^ that_items) == []
+    assert not list(items - that_items)
+    assert not list(items ^ that_items)
 
     items = SortedDict(mapping[:2]).items()
     assert repr(items) == "SortedItemsView(SortedDict({'a': 0, 'b': 1}))"
